@@ -15,11 +15,11 @@ namespace CareerCloud.Pocos
         public Guid Id { get; set; }
         public Guid Company { get; set; }
         [Column("Profile_Created")]
-        public DateTime Profile_Created { get; set; }
+        public DateTime ProfileCreated { get; set; }
         [Column("Is_Inactive")]
-        public Boolean IsInactive { get; set; }
+        public bool IsInactive { get; set; }
         [Column("Is_Company_Hidden")]
-        public Boolean IsCompanyHidden { get; set; }
+        public bool IsCompanyHidden { get; set; }
         [Column("Time_Stamp")]
         public byte[] TimeStamp { get; set; }
     }

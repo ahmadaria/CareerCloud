@@ -11,6 +11,7 @@ namespace CareerCloud.Pocos
     [Table("System_Language_Codes")]
     public class SystemLanguageCodePoco
     {
+        [Key]
         public string LanguageID { get; set; }
         public string Name { get; set; }
         [Column("Native_Name")]
