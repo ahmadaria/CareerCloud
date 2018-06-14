@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CareerCloud.ADODataAccessLayer
 {
-    class ApplicantSkillRepository : IDataRepository<ApplicantSkillPoco>
+    public class ApplicantSkillRepository : IDataRepository<ApplicantSkillPoco>
     {
         public void Add(params ApplicantSkillPoco[] items)
         {
@@ -87,7 +87,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Close();
             }
 
-            return pocos;
+            return pocos.Where(p => p != null).ToList();
         }
 
         public IList<ApplicantSkillPoco> GetList(Expression<Func<ApplicantSkillPoco, bool>> where, params Expression<Func<ApplicantSkillPoco, object>>[] navigationProperties)

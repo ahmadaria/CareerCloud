@@ -15,9 +15,9 @@ namespace CareerCloud.Pocos
         public Guid Id { get; set; }
         public Guid Login { get; set; }
         [Column("Current_Salary")]
-        public decimal? CurrentSalary { get; set; }
+        public Decimal? CurrentSalary { get; set; }
         [Column("Current_Rate")]
-        public decimal? CurrentRate { get; set; }
+        public Decimal? CurrentRate { get; set; }
         public string Currency { get; set; }
         [Column("Country_Code")]
         public string Country { get; set; }

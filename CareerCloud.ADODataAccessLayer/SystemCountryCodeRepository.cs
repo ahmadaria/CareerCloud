@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CareerCloud.ADODataAccessLayer
 {
-    class SystemCountryCodeRepository : IDataRepository<SystemCountryCodePoco>
+    public class SystemCountryCodeRepository : IDataRepository<SystemCountryCodePoco>
     {
         public void Add(params SystemCountryCodePoco[] items)
         {
@@ -74,7 +74,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Close();
             }
 
-            return pocos;
+            return pocos.Where(p => p != null).ToList();
         }
 
         public IList<SystemCountryCodePoco> GetList(Expression<Func<SystemCountryCodePoco, bool>> where, params Expression<Func<SystemCountryCodePoco, object>>[] navigationProperties)
@@ -100,9 +100,9 @@ namespace CareerCloud.ADODataAccessLayer
 
                 foreach (SystemCountryCodePoco poco in items)
                 {
-                    cmd.CommandText = @"DELETE FROM System_Country_Codes WHERE Id = @Id";
+                    cmd.CommandText = @"DELETE FROM System_Country_Codes WHERE Code = @Code";
 
-                    cmd.Parameters.AddWithValue("@Id", poco.Code);
+                    cmd.Parameters.AddWithValue("@Code", poco.Code);
 
                     cmd.ExecuteNonQuery();
                 }

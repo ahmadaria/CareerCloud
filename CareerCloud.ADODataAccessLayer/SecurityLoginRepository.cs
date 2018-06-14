@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CareerCloud.ADODataAccessLayer
 {
-    class SecurityLoginRepository : IDataRepository<SecurityLoginPoco>
+    public class SecurityLoginRepository : IDataRepository<SecurityLoginPoco>
     {
         public void Add(params SecurityLoginPoco[] items)
         {
@@ -40,7 +40,7 @@ namespace CareerCloud.ADODataAccessLayer
                     cmd.Parameters.AddWithValue("@Email_Address", poco.EmailAddress);
                     cmd.Parameters.AddWithValue("@Phone_Number", poco.PhoneNumber);
                     cmd.Parameters.AddWithValue("@Full_Name", poco.FullName);
-                    cmd.Parameters.AddWithValue("@Force_Changed_Password", poco.ForceChangePassword);
+                    cmd.Parameters.AddWithValue("@Force_Change_Password", poco.ForceChangePassword);
                     cmd.Parameters.AddWithValue("@Prefferred_Language", poco.PrefferredLanguage);
 
                     cmd.ExecuteNonQuery();
@@ -63,7 +63,7 @@ namespace CareerCloud.ADODataAccessLayer
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = conn;
-                cmd.CommandText = @"SELECT * FROM Company_Profiles";
+                cmd.CommandText = @"SELECT * FROM Security_Logins";
 
                 conn.Open();
 
@@ -79,16 +79,16 @@ namespace CareerCloud.ADODataAccessLayer
                     poco.Login = reader.GetString(1);
                     poco.Password = reader.GetString(2);
                     poco.Created = reader.GetDateTime(3);
-                    poco.PasswordUpdate = (DateTime?) reader[4];
-                    poco.AgreementAccepted = (DateTime?)reader[5];
+                    poco.PasswordUpdate = reader.IsDBNull(4) ? (DateTime?) null : reader.GetDateTime(4);
+                    poco.AgreementAccepted = reader.IsDBNull(5) ? (DateTime?)null : reader.GetDateTime(5);
                     poco.IsLocked = reader.GetBoolean(6);
                     poco.IsInactive = reader.GetBoolean(7);
                     poco.EmailAddress = reader.GetString(8);
-                    poco.PhoneNumber = reader.GetString(9);
-                    poco.FullName = reader.GetString(10);
+                    poco.PhoneNumber = reader.IsDBNull(9) ? null : reader.GetString(9);
+                    poco.FullName = reader.IsDBNull(10) ? null : reader.GetString(10);
                     poco.ForceChangePassword = reader.GetBoolean(11);
-                    poco.PrefferredLanguage = reader.GetString(12);
-                    poco.TimeStamp = (byte[])reader[13];
+                    poco.PrefferredLanguage = reader.IsDBNull(12) ? null : reader.GetString(12);
+                    poco.TimeStamp = reader.IsDBNull(13) ? null : (byte[]) reader[13];
 
                     pocos[position] = poco;
                     position++;
@@ -97,7 +97,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Close();
             }
 
-            return pocos;
+            return pocos.Where(p => p != null).ToList();
         }
 
         public IList<SecurityLoginPoco> GetList(Expression<Func<SecurityLoginPoco, bool>> where, params Expression<Func<SecurityLoginPoco, object>>[] navigationProperties)
@@ -153,7 +153,7 @@ namespace CareerCloud.ADODataAccessLayer
                                       Agreement_Accepted_Date = @Agreement_Accepted_Date, 
                                       Is_Locked = @Is_Locked, 
                                       Is_Inactive = @Is_Inactive, 
-                                      Email_Address = @Emial_Address, 
+                                      Email_Address = @Email_Address, 
                                       Phone_Number = @Phone_Number, 
                                       Full_Name = @Full_Name, 
                                       Force_Change_Password = @Force_Change_Password, 
@@ -170,7 +170,7 @@ namespace CareerCloud.ADODataAccessLayer
                     cmd.Parameters.AddWithValue("@Email_Address", poco.EmailAddress);
                     cmd.Parameters.AddWithValue("@Phone_Number", poco.PhoneNumber);
                     cmd.Parameters.AddWithValue("@Full_Name", poco.FullName);
-                    cmd.Parameters.AddWithValue("@Force_Changed_Password", poco.ForceChangePassword);
+                    cmd.Parameters.AddWithValue("@Force_Change_Password", poco.ForceChangePassword);
                     cmd.Parameters.AddWithValue("@Prefferred_Language", poco.PrefferredLanguage);
                     cmd.Parameters.AddWithValue("@Id", poco.Id);
 

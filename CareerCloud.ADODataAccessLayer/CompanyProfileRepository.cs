@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CareerCloud.ADODataAccessLayer
 {
-    class CompanyProfileRepository : IDataRepository<CompanyProfilePoco>
+    public class CompanyProfileRepository : IDataRepository<CompanyProfilePoco>
     {
         public void Add(params CompanyProfilePoco[] items)
         {
@@ -71,11 +71,11 @@ namespace CareerCloud.ADODataAccessLayer
 
                     poco.Id = reader.GetGuid(0);
                     poco.RegistrationDate = reader.GetDateTime(1);
-                    poco.CompanyWebsite = reader.GetString(2);
+                    poco.CompanyWebsite = reader.IsDBNull(2) ? null : reader.GetString(2);
                     poco.ContactPhone = reader.GetString(3);
-                    poco.ContactName = reader.GetString(4);
-                    poco.CompanyLogo = (byte[])reader[5];
-                    poco.TimeStamp = (byte[])reader[6];
+                    poco.ContactName = reader.IsDBNull(4) ? null : reader.GetString(4);
+                    poco.CompanyLogo = reader.IsDBNull(5) ? null : (byte[])reader[5];
+                    poco.TimeStamp = reader.IsDBNull(6) ? null : (byte[])reader[6];
 
                     pocos[position] = poco;
                     position++;
@@ -84,7 +84,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Close();
             }
 
-            return pocos;
+            return pocos.Where(p => p != null).ToList();
         }
 
         public IList<CompanyProfilePoco> GetList(Expression<Func<CompanyProfilePoco, bool>> where, params Expression<Func<CompanyProfilePoco, object>>[] navigationProperties)

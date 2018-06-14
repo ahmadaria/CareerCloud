@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CareerCloud.ADODataAccessLayer
 {
-    class SecurityLoginRoleRepository : IDataRepository<SecurityLoginsRolePoco>
+    public class SecurityLoginsRoleRepository : IDataRepository<SecurityLoginsRolePoco>
     {
         public void Add(params SecurityLoginsRolePoco[] items)
         {
@@ -25,7 +25,7 @@ namespace CareerCloud.ADODataAccessLayer
 
                 foreach (SecurityLoginsRolePoco poco in items)
                 {
-                    cmd.CommandText = @"INSERT INTO Security_Login_Roles
+                    cmd.CommandText = @"INSERT INTO Security_Logins_Roles
                                       (Id, Login, Role)
                                       VALUES
                                       (@Id, @Login, @Role)";
@@ -78,7 +78,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Close();
             }
 
-            return pocos;
+            return pocos.Where(p => p != null).ToList();
         }
 
         public IList<SecurityLoginsRolePoco> GetList(Expression<Func<SecurityLoginsRolePoco, bool>> where, params Expression<Func<SecurityLoginsRolePoco, object>>[] navigationProperties)

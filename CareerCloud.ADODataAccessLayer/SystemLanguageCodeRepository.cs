@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CareerCloud.ADODataAccessLayer
 {
-    class SystemLanguageCodeRepository : IDataRepository<SystemLanguageCodePoco>
+    public class SystemLanguageCodeRepository : IDataRepository<SystemLanguageCodePoco>
     {
         public void Add(params SystemLanguageCodePoco[] items)
         {
@@ -76,7 +76,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Close();
             }
 
-            return pocos;
+            return pocos.Where(p => p != null).ToList();
         }
 
         public IList<SystemLanguageCodePoco> GetList(Expression<Func<SystemLanguageCodePoco, bool>> where, params Expression<Func<SystemLanguageCodePoco, object>>[] navigationProperties)
@@ -102,9 +102,9 @@ namespace CareerCloud.ADODataAccessLayer
 
                 foreach (SystemLanguageCodePoco poco in items)
                 {
-                    cmd.CommandText = @"DELETE FROM System_Language_Codes WHERE Id = @Id";
+                    cmd.CommandText = @"DELETE FROM System_Language_Codes WHERE LanguageID = @LanguageID";
 
-                    cmd.Parameters.AddWithValue("@Id", poco.LanguageID);
+                    cmd.Parameters.AddWithValue("@LanguageID", poco.LanguageID);
 
                     cmd.ExecuteNonQuery();
                 }

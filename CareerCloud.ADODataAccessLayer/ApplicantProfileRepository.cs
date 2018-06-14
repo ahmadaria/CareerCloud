@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CareerCloud.ADODataAccessLayer
 {
-    class ApplicantProfileRepository : IDataRepository<ApplicantProfilePoco>
+     public class ApplicantProfileRepository : IDataRepository<ApplicantProfilePoco>
     {
         public void Add(params ApplicantProfilePoco[] items)
         {
@@ -74,8 +74,8 @@ namespace CareerCloud.ADODataAccessLayer
 
                     poco.Id = reader.GetGuid(0);
                     poco.Login = reader.GetGuid(1);
-                    poco.CurrentSalary = (decimal?) reader[2];
-                    poco.CurrentRate = (decimal?) reader[3];
+                    poco.CurrentSalary = (Decimal?) reader[2];
+                    poco.CurrentRate = (Decimal?) reader[3];
                     poco.Currency = reader.GetString(4);
                     poco.Country = reader.GetString(5);
                     poco.Province = reader.GetString(6);
@@ -91,7 +91,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Close();
             }
 
-            return pocos;
+            return pocos.Where(p => p != null).ToList();
         }
 
         public IList<ApplicantProfilePoco> GetList(Expression<Func<ApplicantProfilePoco, bool>> where, params Expression<Func<ApplicantProfilePoco, object>>[] navigationProperties)
@@ -142,7 +142,7 @@ namespace CareerCloud.ADODataAccessLayer
                     cmd.CommandText = @"UPDATE Applicant_Profiles SET 
                                       Login = @Login,
                                       Current_Salary = @Current_Salary, 
-                                      Current_Rate = Current_Rate, 
+                                      Current_Rate = @Current_Rate, 
                                       Currency = @Currency, 
                                       Country_Code = @Country_Code, 
                                       State_Province_Code = @State_Province_Code, 

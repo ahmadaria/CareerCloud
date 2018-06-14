@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CareerCloud.ADODataAccessLayer
 {
-    class SecurityRoleRepository : IDataRepository<SecurityRolePoco>
+    public class SecurityRoleRepository : IDataRepository<SecurityRolePoco>
     {
         public void Add(params SecurityRolePoco[] items)
         {
@@ -77,7 +77,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Close();
             }
 
-            return pocos;
+            return pocos.Where(p => p != null).ToList();
         }
 
         public IList<SecurityRolePoco> GetList(Expression<Func<SecurityRolePoco, bool>> where, params Expression<Func<SecurityRolePoco, object>>[] navigationProperties)

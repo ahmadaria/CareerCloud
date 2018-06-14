@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CareerCloud.ADODataAccessLayer
 {
-    class CompanyLocationRepository : IDataRepository<CompanyLocationPoco>
+    public class CompanyLocationRepository : IDataRepository<CompanyLocationPoco>
     {
         public void Add(params CompanyLocationPoco[] items)
         {
@@ -72,10 +72,10 @@ namespace CareerCloud.ADODataAccessLayer
                     poco.Id = reader.GetGuid(0);
                     poco.Company = reader.GetGuid(1);
                     poco.CountryCode = reader.GetString(2);
-                    poco.Province = reader.GetString(3);
-                    poco.Street = reader.GetString(4);
-                    poco.City = reader.GetString(5);
-                    poco.PostalCode = reader.GetString(6);
+                    poco.Province = reader.IsDBNull(3) ? null : reader.GetString(3);
+                    poco.Street = reader.IsDBNull(4) ? null : reader.GetString(4);
+                    poco.City = reader.IsDBNull(5) ? null : reader.GetString(5);
+                    poco.PostalCode = reader.IsDBNull(6) ? null : reader.GetString(6);
                     poco.TimeStamp = (byte[])reader[7];
 
                     pocos[position] = poco;
@@ -85,7 +85,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Close();
             }
 
-            return pocos;
+            return pocos.Where(p => p != null).ToList();
         }
 
         public IList<CompanyLocationPoco> GetList(Expression<Func<CompanyLocationPoco, bool>> where, params Expression<Func<CompanyLocationPoco, object>>[] navigationProperties)

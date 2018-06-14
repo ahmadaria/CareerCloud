@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CareerCloud.ADODataAccessLayer
 {
-    class ApplicantWorkHistoryRepository : IDataRepository<ApplicantWorkHistoryPoco>
+    public class ApplicantWorkHistoryRepository : IDataRepository<ApplicantWorkHistoryPoco>
     {
         public void Add(params ApplicantWorkHistoryPoco[] items)
         {
@@ -94,7 +94,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Close();
             }
 
-            return pocos;
+            return pocos.Where(p => p != null).ToList();
         }
 
         public IList<ApplicantWorkHistoryPoco> GetList(Expression<Func<ApplicantWorkHistoryPoco, bool>> where, params Expression<Func<ApplicantWorkHistoryPoco, object>>[] navigationProperties)
@@ -152,8 +152,8 @@ namespace CareerCloud.ADODataAccessLayer
                                       Job_Description = @Job_Description, 
                                       Start_Month = @Start_Month, 
                                       Start_Year = @Start_Year, 
-                                      End_Month = End_Month, 
-                                      End_Year = End_Year 
+                                      End_Month = @End_Month, 
+                                      End_Year = @End_Year 
                                       WHERE Id = @Id";
 
                     cmd.Parameters.AddWithValue("@Applicant", poco.Applicant);

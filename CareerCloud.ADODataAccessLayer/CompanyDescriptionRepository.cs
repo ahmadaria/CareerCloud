@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CareerCloud.ADODataAccessLayer
 {
-    class CompanyDescriptionRepository : IDataRepository<CompanyDescriptionPoco>
+    public class CompanyDescriptionRepository : IDataRepository<CompanyDescriptionPoco>
     {
         public void Add(params CompanyDescriptionPoco[] items)
         {
@@ -33,8 +33,8 @@ namespace CareerCloud.ADODataAccessLayer
                     cmd.Parameters.AddWithValue("@Id", poco.Id);
                     cmd.Parameters.AddWithValue("@Company", poco.Company);
                     cmd.Parameters.AddWithValue("@LanguageID", poco.LanguageId);
-                    cmd.Parameters.AddWithValue("@Compay_Name", poco.CompanyName);
-                    cmd.Parameters.AddWithValue("@CompanyDescription", poco.CompanyDescription);
+                    cmd.Parameters.AddWithValue("@Company_Name", poco.CompanyName);
+                    cmd.Parameters.AddWithValue("@Company_Description", poco.CompanyDescription);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -82,7 +82,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Close();
             }
 
-            return pocos;
+            return pocos.Where(p => p != null).ToList();
         }
 
         public IList<CompanyDescriptionPoco> GetList(Expression<Func<CompanyDescriptionPoco, bool>> where, params Expression<Func<CompanyDescriptionPoco, object>>[] navigationProperties)
@@ -140,8 +140,8 @@ namespace CareerCloud.ADODataAccessLayer
 
                     cmd.Parameters.AddWithValue("@Company", poco.Company);
                     cmd.Parameters.AddWithValue("@LanguageID", poco.LanguageId);
-                    cmd.Parameters.AddWithValue("@Compay_Name", poco.CompanyName);
-                    cmd.Parameters.AddWithValue("@CompanyDescription", poco.CompanyDescription);
+                    cmd.Parameters.AddWithValue("@Company_Name", poco.CompanyName);
+                    cmd.Parameters.AddWithValue("@Company_Description", poco.CompanyDescription);
                     cmd.Parameters.AddWithValue("@Id", poco.Id);
 
                     cmd.ExecuteNonQuery();

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CareerCloud.ADODataAccessLayer
 {
-    class CompanyJobDescriptionRepository : IDataRepository<CompanyJobDescriptionPoco>
+    public class CompanyJobDescriptionRepository : IDataRepository<CompanyJobDescriptionPoco>
     {
         public void Add(params CompanyJobDescriptionPoco[] items)
         {
@@ -48,7 +48,7 @@ namespace CareerCloud.ADODataAccessLayer
 
         public IList<CompanyJobDescriptionPoco> GetAll(params Expression<Func<CompanyJobDescriptionPoco, object>>[] navigationProperties)
         {
-            CompanyJobDescriptionPoco[] pocos = new CompanyJobDescriptionPoco[1000];
+            CompanyJobDescriptionPoco[] pocos = new CompanyJobDescriptionPoco[3000];
 
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString))
             {
@@ -79,7 +79,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Close();
             }
 
-            return pocos;
+            return pocos.Where(p => p != null).ToList();
         }
 
         public IList<CompanyJobDescriptionPoco> GetList(Expression<Func<CompanyJobDescriptionPoco, bool>> where, params Expression<Func<CompanyJobDescriptionPoco, object>>[] navigationProperties)

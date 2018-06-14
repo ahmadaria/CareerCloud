@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CareerCloud.ADODataAccessLayer
 {
-    class ApplicantResumeRepository : IDataRepository<ApplicantResumePoco>
+    public class ApplicantResumeRepository : IDataRepository<ApplicantResumePoco>
     {
         public void Add(params ApplicantResumePoco[] items)
         {
@@ -69,7 +69,7 @@ namespace CareerCloud.ADODataAccessLayer
                     poco.Id = reader.GetGuid(0);
                     poco.Applicant = reader.GetGuid(1);
                     poco.Resume = reader.GetString(2);
-                    poco.LastUpdated = reader.GetDateTime(3);
+                    poco.LastUpdated = reader.IsDBNull(3) ? (DateTime?) null : Convert.ToDateTime(reader[3]);
 
                     pocos[position] = poco;
                     position++;
@@ -78,7 +78,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Close();
             }
 
-            return pocos;
+            return pocos.Where(p => p != null).ToList();
         }
 
         public IList<ApplicantResumePoco> GetList(Expression<Func<ApplicantResumePoco, bool>> where, params Expression<Func<ApplicantResumePoco, object>>[] navigationProperties)
